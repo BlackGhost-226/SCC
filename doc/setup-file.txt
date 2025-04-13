@@ -1,0 +1,21 @@
+count starts from 0
+
+the file extension for fonts is .ttf
+
+modes for "audioFile": "R" - replace, "OL" - overlay
+"VA" - video audio
+
+input:
+1) "videoFile":[path, count]
+2) "imgFile":path or None
+3) "audioFile":[path, count, [mode, volume]] or "VA" or None
+4) "text":[path, key] or None
+output:
+1) "videoPath":path
+2) "clipName":str
+sys:
+1) "videoCount":int or -int for infinity
+2) "duration":int
+3) "textFont":path
+4) "wordInLine":int
+5) "textHeight_p":int
