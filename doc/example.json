@@ -1,0 +1,19 @@
+{
+    "input": {
+        "videoFile": [".\\input\\video\\exampleVideo-", 0],
+        "imgFile": null,
+        "audioFile": "VA",
+        "text": [".\\doc\\exampleText", "text"]
+    },
+    "output": {
+        "videoPath": ".\\output",
+        "clipName": "exampleClip-"
+    },
+    "sys": {
+        "videoCount": 1,
+        "duration": 15,
+        "textFont": ".\\input\\fonts\\amiriAmiri-Bold.ttf",
+        "wordInLine": 3,
+        "textHeight_p": 1900
+    }
+}
