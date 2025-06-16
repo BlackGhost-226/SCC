@@ -42,8 +42,9 @@ def setup(setupFile):
 
 if __name__ == "__main__":
     setup(input("choose json setup file: "))
-    create_video = SCC(duration_video, words_in_line, url_font)
-    create_video.text_p = text_p
+    # setup("./doc/example")
+    create_video = SCC(duration_video, words_in_line, url_font, text_p)
+
     video_count = 0
     while video_count != videoCount:
         #       VIDEO
@@ -60,8 +61,7 @@ if __name__ == "__main__":
         else:
             text = video_text_db[0]
 
-        text_element_position = create_video.AddText(text)
-        print(f"text element position: {text_element_position}")
+        create_video.AddText(text)
 
         #       IMG
         if url_img_in != None:

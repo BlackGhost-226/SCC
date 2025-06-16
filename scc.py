@@ -1,14 +1,16 @@
 import moviepy.editor as mp
+import cv2
 
 
 class SCC:
-    def __init__(self, duration_video, words_in_line, url_font):
+    def __init__(self, duration_video, words_in_line, url_font, text_p):
         self.duration_video = duration_video
         self.words_in_line = words_in_line
         self.url_font = url_font
-        self.text_p = 1900
-        self.video = None
+        self.text_p = text_p
+        self.resolution = ()
 
+        self.video = None
         self.clipElementsList = []
 
     def SplitText(self, text):
@@ -35,11 +37,23 @@ class SCC:
     def AddVideoClip(self, videoUrl):
         video = mp.VideoFileClip(videoUrl)
 
+        vid = cv2.VideoCapture(videoUrl)
+        height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+
+        print(f"video resolution: {width}x{height}")
+        self.resolution = (width, height)
+
         if video.duration < self.duration_video:
             self.duration_video = video.duration
 
         clip_video = video.subclip(0, self.duration_video)
+
+        clip_video = clip_video.resize(self.resolution)
+
         self.video = clip_video
+
+        print(f"video real resolution: {self.video.w}x{self.video.h}")
 
     def AddText(self, text):
         text_element_position = (self.video.h / 2160) * self.text_p
@@ -54,7 +68,8 @@ class SCC:
         clip_text = clip_text.set_position(("center", text_element_position))
         clip_text = clip_text.set_duration(self.duration_video)
         self.clipElementsList.append(clip_text)
-        return text_element_position
+
+        print(f"text element position: {text_element_position}")
 
     def AddImg(self, imgUrl):
         clip_img = mp.ImageClip(imgUrl)
@@ -80,7 +95,7 @@ class SCC:
         self.video = self.video.with_audio(clip_audio)
 
     def CreateVideo(self, videoName, videoUrl):
-        self.clipElementsList.append(self.video)
+        self.clipElementsList.insert(0, self.video)
 
         print("---| Debugging is working |---")
         for i, clip in enumerate(self.clipElementsList):
@@ -91,5 +106,5 @@ class SCC:
 
         print("---| Moviepy is working |---")
         # clips_array, concatenate_videoclips, CompositeVideo
-        final_clip = mp.CompositeVideoClip(self.clipElementsList, size=(1920, 1080))
-        final_clip.write_videofile(f"{videoUrl}\\{videoName}.mp4")
+        final_clip = mp.CompositeVideoClip(clips=self.clipElementsList, size=self.resolution)
+        final_clip.write_videofile(f"{videoUrl}\\{videoName}.mp4", codec="libx264", fps=self.video.fps)
