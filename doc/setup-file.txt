@@ -1,6 +1,7 @@
 count starts from 0
 
 the file extension for fonts is .ttf
+works only with .mp4 video format
 
 modes for "audioFile": "R" - replace, "OL" - overlay
 "VA" - video audio
